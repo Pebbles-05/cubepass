@@ -35,14 +35,14 @@
 	};
 </script>
 
-<div class="w-full flex gap-2 lg:gap-4 text-[18px] lg:text-[20px]">
+<div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-4 text-[20px]">
 	<form class="flex flex-col w-full gap-2" on:submit|preventDefault>
 		<span>Password length :</span>
 		<div class="w-full flex gap-2">
 			<input
 				type="text"
 				value={length}
-				class="w-8 lg:w-9 h-max outline outline-2 outline-[#cdd6f4] rounded px-2 py-1 bg-transparent"
+				class="w-9 h-max outline outline-2 outline-[#cdd6f4] rounded px-2 py-1 bg-transparent"
 				on:keypress={handleLengthInput}
 				on:input={(e) => (e.target.value = e.target.value.replace(/\D/g, ''))}
 			/>
@@ -56,14 +56,14 @@
 			/>
 		</div>
 	</form>
-	<div class="w-full flex flex-col gap-1">
+	<div class="w-full flex flex-col gap-2">
 		{#each options as option (option.id)}
-			<label class="flex gap-1 lg:gap-2 items-start cursor-pointer" title={option.title}>
+			<label class="flex gap-2 items-start cursor-pointer" title={option.title}>
 				<Icon
 					icon={option.value
 						? 'fluent:checkbox-indeterminate-16-filled'
 						: 'fluent:checkbox-unchecked-16-filled'}
-					class="w-4 h-4 lg:w-6 lg:h-6 shrink-0 m-[3px] lg:mt-[0.5px]"
+					class="w-6 h-6 shrink-0 mt-[0.5px]"
 				/>
 				<input
 					type="checkbox"

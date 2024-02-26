@@ -83,25 +83,21 @@
 	);
 </script>
 
-<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-xl lg:text-2xl">
+<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-2xl">
 	<input
-		class="w-full bg-transparent outline-none py-2 pl-2 pr-1 h-max lg:py-4 lg:pr-2 lg:pl-4"
+		class="w-full bg-transparent outline-none h-max py-4 pr-2 pl-4"
 		type="text"
 		bind:value={password}
 	/>
 	<div
-		class="cursor-pointer px-1 lg:px-2 w-max {isCoppied ? 'pointer-events-none' : ''}"
+		class="cursor-pointer px-2 w-max {isCoppied ? 'pointer-events-none' : ''}"
 		on:click={copyInputValue}
 		title="copy"
 	>
-		<Icon icon={isCoppied ? 'charm:tick-double' : 'tabler:copy'} class="h-full w-5 lg:w-7" />
+		<Icon icon={isCoppied ? 'charm:tick-double' : 'tabler:copy'} class="h-full w-7" />
 	</div>
 
-	<div
-		class="cursor-pointer pl-1 pr-2 lg:pl-2 lg:pr-4 w-max"
-		title="generate"
-		on:click={() => generatePassword()}
-	>
-		<Icon icon="grommet-icons:power-reset" class="h-full w-5 lg:w-7" />
+	<div class="cursor-pointer pl-2 pr-4 w-max" title="generate" on:click={() => generatePassword()}>
+		<Icon icon="grommet-icons:power-reset" class="h-full w-7" />
 	</div>
 </div>
