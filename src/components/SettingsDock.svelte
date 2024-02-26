@@ -52,7 +52,7 @@
 				min={1}
 				max={50}
 				bind:value={length}
-				class="accent-[#cdd6f4] w-full"
+				class="accent-[#cdd6f4] w-full cursor-pointer"
 			/>
 		</div>
 	</form>
