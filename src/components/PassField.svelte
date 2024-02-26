@@ -5,24 +5,25 @@
 		includeUppercase: boolean = true,
 		includeNumbers: boolean = true,
 		includeLowercase: boolean = true,
-		includeSpecialChars: boolean = true;
+		includeSpecialChars: boolean = true,
+		isCoppied: boolean = false;
 
 	const copyInputValue = (): void => {
-		// Access the value from the input field using the bound variable
 		const copiedValue = password;
-		// Now you can use copiedValue wherever you need it
-		console.log('Copied value:', copiedValue);
-		// You can also copy it to the clipboard
 		navigator.clipboard
 			.writeText(copiedValue)
 			.then(() => {
+				isCoppied = true;
+				setTimeout(() => {
+					isCoppied = false;
+					console.log('running');
+				}, 2000);
 				console.log('Copied to clipboard!');
 			})
 			.catch((err) => {
 				console.error('Failed to copy: ', err);
 			});
 	};
-	// Function to get a random character from a string
 	const getRandomChar = (str: string): string => {
 		return str.charAt(Math.floor(Math.random() * str.length));
 	};
@@ -34,7 +35,6 @@
 		haveNumbers: boolean = includeNumbers,
 		haveSpecialChars: boolean = includeSpecialChars
 	): void => {
-		// Define character sets for each character type
 		const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
 		const numberChars = '0123456789';
@@ -43,7 +43,6 @@
 		let newPassword = '',
 			allChars = '';
 
-		// Ensure at least one character from each selected character type
 		if (haveUppercase) {
 			allChars += uppercaseChars;
 			newPassword += getRandomChar(uppercaseChars);
@@ -62,18 +61,17 @@
 		}
 
 		if (allChars === '' && !passwordLength) return;
-		const remainingLength = length - newPassword.length; // Remaining length for random characters
+		const remainingLength = length - newPassword.length;
 
-		// Generate remaining random characters
 		for (let i = 0; i < remainingLength; i++) {
 			newPassword += allChars.charAt(Math.floor(Math.random() * allChars.length));
 		}
 
-		// Shuffle the password to ensure randomness
 		password = newPassword
 			.split('')
 			.sort(() => Math.random() - 0.5)
-			.join('');
+			.join('')
+			.slice(0, passwordLength);
 	};
 
 	$: generatePassword(
@@ -85,17 +83,25 @@
 	);
 </script>
 
-<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-2xl">
+<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-xl lg:text-2xl">
 	<input
-		class="w-full bg-transparent outline-none py-4 pl-4 pr-2 h-max"
+		class="w-full bg-transparent outline-none py-2 pl-2 pr-1 h-max lg:py-4 lg:pr-2 lg:pl-4"
 		type="text"
 		bind:value={password}
 	/>
-	<div class="cursor-pointer px-2 w-max" on:click={copyInputValue}>
-		<Icon icon="tabler:copy" class="h-full w-7" />
+	<div
+		class="cursor-pointer px-1 lg:px-2 w-max {isCoppied ? 'pointer-events-none' : ''}"
+		on:click={copyInputValue}
+		title="copy"
+	>
+		<Icon icon={isCoppied ? 'charm:tick-double' : 'tabler:copy'} class="h-full w-5 lg:w-7" />
 	</div>
 
-	<div class="cursor-pointer pl-2 pr-4 w-max" on:click={() => generatePassword()}>
-		<Icon icon="grommet-icons:power-reset" class="h-full w-7" />
+	<div
+		class="cursor-pointer pl-1 pr-2 lg:pl-2 lg:pr-4 w-max"
+		title="generate"
+		on:click={() => generatePassword()}
+	>
+		<Icon icon="grommet-icons:power-reset" class="h-full w-5 lg:w-7" />
 	</div>
 </div>
