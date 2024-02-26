@@ -1,5 +1,4 @@
-###cubepas
-
+### CUBEPASS
 
 A dynamic password generator made in svelte to ensure user's privacy is guarded.
 
