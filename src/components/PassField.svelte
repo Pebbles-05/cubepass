@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { passwordStrengthState } from '../enums/options.ts';
 	import Icon from '@iconify/svelte';
 	export let password: string = '',
 		length: number = 12,
@@ -81,23 +82,39 @@
 		includeNumbers,
 		includeSpecialChars
 	);
+	$: passwordStrengthIndicator =
+		password.length < 7
+			? passwordStrengthState.weak
+			: password.length < 9
+				? passwordStrengthState.fair
+				: passwordStrengthState.strong;
 </script>
 
-<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-2xl">
-	<input
-		class="w-full bg-transparent outline-none h-max py-4 pr-2 pl-4"
-		type="text"
-		bind:value={password}
-	/>
-	<div
-		class="cursor-pointer px-2 w-max {isCoppied ? 'pointer-events-none' : ''}"
-		on:click={copyInputValue}
-		title="copy"
-	>
-		<Icon icon={isCoppied ? 'charm:tick-double' : 'tabler:copy'} class="h-full w-7" />
+<div class="flex flex-col gap-2">
+	<div class="flex gap-1 items-center">
+		<Icon icon={passwordStrengthIndicator.icon} />
+		{passwordStrengthIndicator.title}
 	</div>
+	<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-2xl">
+		<input
+			class="w-full bg-transparent outline-none h-max py-4 pr-2 pl-4"
+			type="text"
+			bind:value={password}
+		/>
+		<div
+			class="cursor-pointer px-2 w-max {isCoppied ? 'pointer-events-none' : ''}"
+			on:click={copyInputValue}
+			title="copy"
+		>
+			<Icon icon={isCoppied ? 'charm:tick-double' : 'tabler:copy'} class="h-full w-7" />
+		</div>
 
-	<div class="cursor-pointer pl-2 pr-4 w-max" title="generate" on:click={() => generatePassword()}>
-		<Icon icon="grommet-icons:power-reset" class="h-full w-7" />
+		<div
+			class="cursor-pointer pl-2 pr-4 w-max"
+			title="generate"
+			on:click={() => generatePassword()}
+		>
+			<Icon icon="grommet-icons:power-reset" class="h-full w-7" />
+		</div>
 	</div>
 </div>
