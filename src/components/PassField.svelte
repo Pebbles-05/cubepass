@@ -1,13 +1,20 @@
 <script lang="ts">
-	import { passwordStrengthState } from '../enums/options.ts';
+	import { passwordStrengthState } from '../enums/passwordStrengthState';
 	import Icon from '@iconify/svelte';
+	import type { passwordStrengthStateType } from '../types/types';
+	import commonPasswords from '../enums/commonPasswords.json';
+
 	export let password: string = '',
-		length: number = 12,
+		length: number = 16,
 		includeUppercase: boolean = true,
 		includeNumbers: boolean = true,
 		includeLowercase: boolean = true,
 		includeSpecialChars: boolean = true,
 		isCoppied: boolean = false;
+	const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+		lowercaseChars = 'abcdefghijklmnopqrstuvwxyz',
+		numberChars = '0123456789',
+		specialChars = '!@#$%^&*()_+{}[]|:;"\'<>,.?/';
 
 	const copyInputValue = (): void => {
 		const copiedValue = password;
@@ -36,11 +43,6 @@
 		haveNumbers: boolean = includeNumbers,
 		haveSpecialChars: boolean = includeSpecialChars
 	): void => {
-		const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
-		const numberChars = '0123456789';
-		const specialChars = '!@#$%^&*()_+{}[]|:;"\'<>,.?/';
-
 		let newPassword = '',
 			allChars = '';
 
@@ -62,17 +64,16 @@
 		}
 
 		if (allChars === '' && !passwordLength) return;
-		const remainingLength = length - newPassword.length;
+		const remainingLength = passwordLength - newPassword.length;
 
 		for (let i = 0; i < remainingLength; i++) {
-			newPassword += allChars.charAt(Math.floor(Math.random() * allChars.length));
+			newPassword += getRandomChar(allChars);
 		}
 
 		password = newPassword
 			.split('')
 			.sort(() => Math.random() - 0.5)
-			.join('')
-			.slice(0, passwordLength);
+			.join('');
 	};
 
 	$: generatePassword(
@@ -82,16 +83,45 @@
 		includeNumbers,
 		includeSpecialChars
 	);
-	$: passwordStrengthIndicator =
-		password.length < 7
-			? passwordStrengthState.weak
-			: password.length < 9
-				? passwordStrengthState.fair
-				: passwordStrengthState.strong;
+
+	const checkCommonElements = (password: string, charList: string): boolean => {
+		const passwordSet = new Set(password);
+		const charListSet = new Set(charList);
+		return [...passwordSet].some((letter) => charListSet.has(letter));
+	};
+	const checkPasswordStrength = (password: string): passwordStrengthStateType => {
+		const minLength = 8;
+		if (password.length < minLength || commonPasswords.includes(password.toLowerCase())) {
+			return passwordStrengthState.weak;
+		}
+
+		const minComplexityCount = 3;
+		let complexityCount = 0;
+		if (checkCommonElements(password, uppercaseChars)) {
+			complexityCount++;
+		}
+		if (checkCommonElements(password, lowercaseChars)) {
+			complexityCount++;
+		}
+		if (checkCommonElements(password, numberChars)) {
+			complexityCount++;
+		}
+		if (checkCommonElements(password, specialChars)) {
+			complexityCount++;
+		}
+
+		if (complexityCount < minComplexityCount && password.length < 16) {
+			return passwordStrengthState.fair;
+		}
+
+		return passwordStrengthState.strong;
+	};
+	console.log(commonPasswords);
+	$: passwordStrengthIndicator = checkPasswordStrength(password);
 </script>
 
 <div class="flex flex-col gap-2">
-	<div class="flex gap-1 items-center">
+	<div class="flex gap-1 items-center text-sm">
 		<Icon icon={passwordStrengthIndicator.icon} />
 		{passwordStrengthIndicator.title}
 	</div>

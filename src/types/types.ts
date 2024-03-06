@@ -3,3 +3,8 @@ export interface optionsType {
 	title: string;
 	value: boolean;
 }
+
+export interface passwordStrengthStateType {
+	title: string;
+	icon: string;
+}

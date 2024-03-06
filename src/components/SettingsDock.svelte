@@ -49,7 +49,7 @@
 			<input
 				type="range"
 				name="length"
-				min={1}
+				min={4}
 				max={50}
 				bind:value={length}
 				class="accent-[#cdd6f4] w-full cursor-pointer"

@@ -5,7 +5,7 @@
 	import type { optionsType } from '../types/types';
 
 	let options: optionsType[],
-		length: number = 12;
+		length: number = 16;
 	$: isOptionsAvailable = Array.isArray(options) && options?.length != 0;
 </script>
 
