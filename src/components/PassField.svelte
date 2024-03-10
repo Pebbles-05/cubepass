@@ -128,11 +128,11 @@
 </script>
 
 <div class="flex flex-col gap-2">
-	<div class="flex gap-1 items-center text-sm">
+	<div class="flex gap-1 items-center text-sm lg:text-xl">
 		<Icon icon={passwordStrengthIndicator.icon} />
 		{passwordStrengthIndicator.title}
 	</div>
-	<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-2xl">
+	<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-2xl lg:text-4xl">
 		<input
 			class="w-full bg-transparent outline-none h-max py-4 pr-2 pl-4"
 			type="text"

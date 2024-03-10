@@ -1,5 +1,3 @@
-import type { passwordStrengthStateType } from '../types/types';
-
 export const passwordStrengthState = {
 	weak: {
 		title: 'Weak',
