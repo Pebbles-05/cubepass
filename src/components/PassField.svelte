@@ -10,8 +10,8 @@
 		includeNumbers: boolean = true,
 		includeLowercase: boolean = true,
 		includeSpecialChars: boolean = true,
-		isCoppied: boolean = false,
-		passwordStrengthIndicator: passwordStrengthStateType;
+		isCoppied: boolean = false;
+	let passwordStrengthIndicator: passwordStrengthStateType;
 	const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
 		lowercaseChars = 'abcdefghijklmnopqrstuvwxyz',
 		numberChars = '0123456789',
@@ -129,7 +129,7 @@
 
 <div class="flex flex-col gap-2">
 	<div class="flex gap-1 items-center text-sm lg:text-xl">
-		<Icon icon={passwordStrengthIndicator.icon} />
+		<Icon class="mb-0.5" icon={passwordStrengthIndicator.icon} />
 		{passwordStrengthIndicator.title}
 	</div>
 	<div class="w-full flex outline outline-[#cdd6f4] rounded outline-2 text-2xl lg:text-4xl">
